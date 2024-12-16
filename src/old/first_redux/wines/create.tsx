@@ -4,7 +4,7 @@ import { Wine, wineSchema } from "../../../schemas/wine.schema";
 import CustomInputText from "../../../components/ui/InputText";
 import useCustomForm from "../../../hooks/useCustomForm";
 import { useDispatch } from "react-redux";
-import { addWine } from "../../../store/slices/wine-slice";
+import { addWine } from "../../../store/actions/wine-actions";
 
 const Create = () => {
   const {

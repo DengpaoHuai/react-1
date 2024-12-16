@@ -1,21 +1,21 @@
 import { useEffect } from "react";
+import { getWines } from "../../../services/wine.service";
 import { Link } from "react-router";
-import { useSelector } from "react-redux";
-import { RootState, useAppDispatch } from "../../../store/store";
-import { setAllWines } from "../../../store/thunk-actions/wine-thunk";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
+import { setAllWines } from "../../../store/actions/wine-actions";
 
 const List = () => {
-  const { wines, isLoading } = useSelector((state: RootState) => state.wine);
-  const dispatch = useAppDispatch();
+  const wines = useSelector((state: RootState) => state.wine.wines);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setAllWines());
+    //  getWines().then((data) => dispatch(setAllWines(data)));
   }, []);
 
   return (
     <div>
       <h1>Wines</h1>
-      {isLoading && <p>Loading...</p>}
       <Link to="/wines/create">Create</Link>
       {wines?.map((wine) => (
         <div key={wine._id}>
