@@ -1,8 +1,10 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, redirect } from "react-router";
 import Planets from "./routes/planets";
 import Home from "./routes/home";
 import Create from "./routes/wines/create";
 import List from "./routes/wines/list";
+import { getWines } from "../services/wine.service";
+import { useWineStore } from "../store/useWine";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +20,16 @@ const router = createBrowserRouter([
     children: [
       {
         path: "list",
+        loader: async () => {
+          try {
+            const data = await getWines();
+            useWineStore.setState({ wines: data });
+            return true;
+          } catch (err: unknown) {
+            console.error(err);
+            return redirect("/wines/404");
+          }
+        },
         element: <List></List>,
       },
       {

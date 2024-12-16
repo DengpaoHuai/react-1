@@ -4,6 +4,7 @@ import { Wine, wineSchema } from "../../../schemas/wine.schema";
 import CustomInputText from "../../../components/ui/InputText";
 import useCustomForm from "../../../hooks/useCustomForm";
 import { useDispatch } from "react-redux";
+import { addWine } from "../../../store/slices/wine-slice";
 
 const Create = () => {
   const {
@@ -21,7 +22,7 @@ const Create = () => {
     console.log(data);
     createWine(data).then((response) => {
       console.log(response);
-      // dispatch(addWine(response));
+      dispatch(addWine(response));
       navigate("/wines/list");
     });
   };
