@@ -4,13 +4,19 @@ import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../../store/store";
 import { setAllWines } from "../../../store/thunk-actions/wine-thunk";
 
-const List = () => {
+const useWines = () => {
   const { wines, isLoading } = useSelector((state: RootState) => state.wine);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(setAllWines());
   }, []);
+
+  return { wines, isLoading };
+};
+
+const List = () => {
+  const { wines, isLoading } = useWines();
 
   return (
     <div>

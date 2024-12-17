@@ -36,6 +36,10 @@ const router = createBrowserRouter([
         path: "create",
         element: <Create></Create>,
       },
+      {
+        path: "update/:id",
+        element: <Create></Create>,
+      },
     ],
   },
 ]);

@@ -1,5 +1,5 @@
 import { createWine } from "../../../services/wine.service";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Wine, wineSchema } from "../../../schemas/wine.schema";
 import CustomInputText from "../../../components/ui/InputText";
 import useCustomForm from "../../../hooks/useCustomForm";

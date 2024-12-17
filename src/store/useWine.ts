@@ -13,9 +13,9 @@ type WineStore = {
 };
 
 //singleton
-export const useWineStore = create(
+export const useWineStore = create<WineStore>()(
   devtools(
-    persist<WineStore>(
+    persist(
       (set) => ({
         wines: [],
         actions: {
@@ -29,6 +29,8 @@ export const useWineStore = create(
     )
   )
 );
+
+//export const useWineActions = () => useWineStore((state) => state.actions);
 
 //hook custom
 export const useWine = () => {
