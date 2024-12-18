@@ -12,7 +12,7 @@ export type Wine = z.infer<typeof wineSchema> & { _id: string };
 const waitFor = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export const getWines = async () => {
-  await waitFor(2000);
+  //  await waitFor(2000);
   const response = await httpClient.get("/wines");
   return response.data;
 };

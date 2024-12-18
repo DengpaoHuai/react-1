@@ -5,6 +5,7 @@ import store from "../store/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ReactSnackBarProvider } from "../components/ui/ReactSnackBar";
+import { ReactModalProvider } from "../components/ui/ReactModal";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,12 +18,14 @@ const queryClient = new QueryClient({
 const App = () => {
   return (
     <>
-      <ReactSnackBarProvider>
-        <QueryClientProvider client={queryClient}>
-          <AppRouter></AppRouter>
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-      </ReactSnackBarProvider>
+      <ReactModalProvider>
+        <ReactSnackBarProvider>
+          <QueryClientProvider client={queryClient}>
+            <AppRouter></AppRouter>
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
+        </ReactSnackBarProvider>
+      </ReactModalProvider>
     </>
   );
 };

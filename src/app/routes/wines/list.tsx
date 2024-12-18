@@ -5,7 +5,7 @@ import {
   wineQueryOptions,
 } from "../../../features/wines/api/get-wines";
 import { useDeleteWineMutation } from "../../../features/wines/api/delete-wine";
-import { useSnackBar } from "../../../components/ui/ReactSnackBar";
+import { useModal } from "../../../components/ui/ReactModal";
 
 const List = () => {
   // const demo = useSuspenseQuery(wineQueryOptions);
@@ -14,7 +14,7 @@ const List = () => {
   const { data: wines } = useWines();
   const queryClient = useQueryClient();
   const mutation = useDeleteWineMutation();
-  const { show } = useSnackBar();
+  const { show } = useModal();
 
   return (
     <div>

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useWineStore } from "../store/useWine";
+import { useModalStore } from "../components/ui/ReactModal";
 
 const httpClient = axios.create({
   baseURL: "https://crudcrud.com/api/3a89573ac414415185aa59afd17594c5",
@@ -9,6 +10,15 @@ httpClient.interceptors.request.use((config) => {
   const store = useWineStore.getState();
   console.log("store");
   console.log(store);
+
+  //useModalStore.getState().show("Loading", "loading", 2000);
+
+  useModalStore.setState({
+    message: "Loading",
+    display: true,
+    title: "loading",
+  });
+
   return config;
 });
 
