@@ -1,27 +1,21 @@
-import { createWine } from "../../../services/wine.service";
-import { useNavigate } from "react-router";
 import { Wine, wineSchema } from "../../../schemas/wine.schema";
 import CustomInputText from "../../../components/ui/InputText";
 import useCustomForm from "../../../hooks/useCustomForm";
 
-const Create = () => {
+type WineFormProps = {
+  defaultValues?: Omit<Wine, "_id">;
+  onSubmit: (data: Omit<Wine, "_id">) => void;
+};
+
+const WineForm = ({ defaultValues, onSubmit }: WineFormProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useCustomForm<Omit<Wine, "_id">>({
     schema: wineSchema,
+    defaultValues,
   });
-  const navigate = useNavigate();
-
-  const onSubmit = (data: Omit<Wine, "_id">) => {
-    console.log(data);
-    createWine(data).then((response) => {
-      console.log(response);
-      // dispatch(addWine(response));
-      navigate("/wines/list");
-    });
-  };
 
   return (
     <div>
@@ -46,4 +40,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default WineForm;

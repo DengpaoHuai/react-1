@@ -2,7 +2,7 @@ import axios from "axios";
 import { useWineStore } from "../store/useWine";
 
 const httpClient = axios.create({
-  baseURL: "https://crudcrud.com/api/fb5ca49fa29e4e2886e6eaab91aa4cf4",
+  baseURL: "https://crudcrud.com/api/3a89573ac414415185aa59afd17594c5",
 });
 
 httpClient.interceptors.request.use((config) => {

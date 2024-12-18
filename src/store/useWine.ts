@@ -7,9 +7,7 @@ import { devtools } from "zustand/middleware";
 
 type WineStore = {
   wines: Wine[];
-  actions: {
-    setWine: (wines: Wine[]) => void;
-  };
+  setWine: (wines: Wine[]) => void;
 };
 
 //singleton
@@ -18,9 +16,7 @@ export const useWineStore = create<WineStore>()(
     persist(
       (set) => ({
         wines: [],
-        actions: {
-          setWine: (wines: Wine[]) => set({ wines }),
-        },
+        setWine: (wines: Wine[]) => set({ wines }),
       }),
       {
         name: "wine-storage", // name of the item in the storage (must be unique)
@@ -34,10 +30,7 @@ export const useWineStore = create<WineStore>()(
 
 //hook custom
 export const useWine = () => {
-  const {
-    wines,
-    actions: { setWine },
-  } = useWineStore((state) => state);
+  const { wines, setWine } = useWineStore((state) => state);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -46,7 +39,7 @@ export const useWine = () => {
       setWine(response);
       setIsLoading(false);
     });
-  }, [setWine]);
+  }, []);
 
   return { wines, isLoading };
 };

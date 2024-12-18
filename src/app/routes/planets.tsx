@@ -1,30 +1,8 @@
-import { Fragment, useState } from "react";
-import usePromised from "../../hooks/usePromised";
-
-type Planet = {
-  name: string;
-  uid: number;
-  url: string;
-};
-
-type PlanetResponse = {
-  results: Planet[];
-  next: string | null;
-  previous: string | null;
-  total_records: number;
-};
-
-const getData = async (url: string) => {
-  const response = await fetch(url);
-  return response.json();
-};
+import { Fragment } from "react";
+import { usePlanets } from "../../features/planets/api/get-planets";
 
 function Planets() {
-  const [page, setPage] = useState("https://www.swapi.tech/api/planets");
-  const { data } = usePromised<PlanetResponse>({
-    fn: () => getData(page),
-    key: page,
-  });
+  const { data, increment, decrement, isLoading } = usePlanets();
 
   return (
     <div
@@ -32,6 +10,7 @@ function Planets() {
         height: "250vh",
       }}
     >
+      {isLoading && <div>Loading...</div>}
       {data?.results.map((planet) => (
         <Fragment key={planet.uid}>
           <h2>{planet.name}</h2>
@@ -39,16 +18,10 @@ function Planets() {
         </Fragment>
       ))}
 
-      <button
-        disabled={!data?.previous}
-        onClick={() => data?.previous && setPage(data?.previous)}
-      >
+      <button disabled={!data?.previous} onClick={decrement}>
         previous
       </button>
-      <button
-        disabled={!data?.next}
-        onClick={() => data?.next && setPage(data?.next)}
-      >
+      <button disabled={!data?.next} onClick={increment}>
         next
       </button>
     </div>

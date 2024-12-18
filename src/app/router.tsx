@@ -1,47 +1,65 @@
-import { createBrowserRouter, redirect } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import Planets from "./routes/planets";
 import Home from "./routes/home";
-import Create from "./routes/wines/create";
+import { Suspense, useMemo } from "react";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
 import List from "./routes/wines/list";
-import { getWines } from "../services/wine.service";
-import { useWineStore } from "../store/useWine";
+import Create from "./routes/wines/create";
+import Update, { getWinesLoader } from "./routes/wines/update";
+import WineLayout from "../components/layouts/WineLayout";
 
-const router = createBrowserRouter([
-  {
-    path: "/planets",
-    element: <Planets></Planets>,
-  },
-  {
-    path: "/",
-    element: <Home></Home>,
-  },
-  {
-    path: "/wines",
-    children: [
-      {
-        path: "list",
-        loader: async () => {
-          try {
-            const data = await getWines();
-            useWineStore.setState({ wines: data });
-            return true;
-          } catch (err: unknown) {
-            console.error(err);
-            return redirect("/wines/404");
-          }
+export const createAppRouter = (queryClient: QueryClient) =>
+  createBrowserRouter([
+    {
+      path: "/planets",
+      element: <Planets></Planets>,
+    },
+    {
+      path: "/",
+      element: <Home></Home>,
+    },
+    {
+      path: "/wines",
+      element: <WineLayout></WineLayout>,
+      ErrorBoundary: ({ error }) => {
+        return <div>Error: {error.message}</div>;
+      },
+      children: [
+        {
+          path: "list",
+          loader: async () => {
+            /* try {
+                  const data = await getWines();
+                  useWineStore.setState({ wines: data });
+                  return true;
+                } catch (err: unknown) {
+                  console.error(err);
+                  return redirect("/wines/404");
+                }*/
+          },
+          element: (
+            <Suspense fallback={<div>Loading...</div>}>
+              <List></List>
+            </Suspense>
+          ),
         },
-        element: <List></List>,
-      },
-      {
-        path: "create",
-        element: <Create></Create>,
-      },
-      {
-        path: "update/:id",
-        element: <Create></Create>,
-      },
-    ],
-  },
-]);
+        {
+          path: "create",
+          element: <Create></Create>,
+        },
+        {
+          loader: (params) => getWinesLoader({ queryClient }),
+          path: "update/:id",
+          element: <Update></Update>,
+        },
+      ],
+    },
+  ]);
 
-export default router;
+export const AppRouter = () => {
+  const queryClient = useQueryClient();
+
+  const router = useMemo(() => createAppRouter(queryClient), [queryClient]);
+
+  return <RouterProvider router={router} />;
+};
